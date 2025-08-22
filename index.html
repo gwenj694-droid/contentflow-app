@@ -1547,10 +1547,16 @@
         function updateScheduledPosts() {
             const container = document.getElementById('scheduledPosts');
             const dayPosts = scheduledPosts.filter(post => {
-                const postDate = new Date(post.date);
-                return postDate.getFullYear() === selectedDate.getFullYear() &&
-                       postDate.getMonth() === selectedDate.getMonth() &&
-                       postDate.getDate() === selectedDate.getDate();
+                if (!post || !post.date) return false;
+                try {
+                    const postDate = new Date(post.date);
+                    return postDate.getFullYear() === selectedDate.getFullYear() &&
+                           postDate.getMonth() === selectedDate.getMonth() &&
+                           postDate.getDate() === selectedDate.getDate();
+                } catch (e) {
+                    console.error('Invalid post date:', post.date);
+                    return false;
+                }
             });
             
             if (dayPosts.length === 0) {
@@ -1558,57 +1564,93 @@
                 return;
             }
             
-            container.innerHTML = dayPosts.map(post => {
+            // Clear container first
+            container.innerHTML = '';
+            
+            // Create posts dynamically with proper event handlers
+            dayPosts.forEach(post => {
                 const postAccounts = post.accounts.map(accountId => 
                     connectedAccounts.find(acc => acc.id == accountId)
                 ).filter(Boolean);
                 
-                return `
-                    <div class="post-item border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="flex items-center space-x-2">
-                                <span class="text-sm font-medium text-gray-600">
-                                    ${new Date(post.date).toLocaleTimeString('en-US', { 
-                                        hour: '2-digit', 
-                                        minute: '2-digit' 
-                                    })}
-                                </span>
-                                <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
-                                    ${post.type}
-                                </span>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                ${isToday(post.date) ? `
-                                    <button onclick="postNow(${post.id})" class="bg-purple-400 hover:bg-purple-500 text-black px-3 py-1 rounded text-sm transition-colors">
-                                        Post Now
-                                    </button>
-                                ` : ''}
-                                <button onclick="editPost(${post.id})" class="text-blue-600 hover:text-blue-800 text-sm">
-                                    Edit
-                                </button>
-                                <button onclick="deletePost(${post.id})" class="text-red-600 hover:text-red-800 text-sm">
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-                        ${post.image ? `
-                            <div class="mb-3">
-                                <img src="${post.image}" alt="Post image" class="w-full h-48 object-cover rounded-lg">
-                            </div>
-                        ` : ''}
-                        <p class="text-gray-800 mb-3">${post.content.substring(0, 150)}${post.content.length > 150 ? '...' : ''}</p>
+                const postElement = document.createElement('div');
+                postElement.className = 'post-item border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow';
+                
+                postElement.innerHTML = `
+                    <div class="flex items-start justify-between mb-3">
                         <div class="flex items-center space-x-2">
-                            <span class="text-sm text-gray-600">Accounts:</span>
-                            ${postAccounts.map(account => `
-                                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded flex items-center space-x-1">
-                                    <span>${getPlatformIcon(account.platform)}</span>
-                                    <span>${account.handle}</span>
-                                </span>
-                            `).join('')}
+                            <span class="text-sm font-medium text-gray-600">
+                                ${new Date(post.date).toLocaleTimeString('en-US', { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit' 
+                                })}
+                            </span>
+                            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
+                                ${post.type}
+                            </span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            ${isToday(post.date) ? `
+                                <button class="post-now-btn bg-purple-400 hover:bg-purple-500 text-black px-3 py-1 rounded text-sm transition-colors">
+                                    Post Now
+                                </button>
+                            ` : ''}
+                            <button class="edit-btn text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                Edit
+                            </button>
+                            <button class="delete-btn text-red-600 hover:text-red-800 text-sm font-medium">
+                                Delete
+                            </button>
                         </div>
                     </div>
+                    ${post.image ? `
+                        <div class="mb-3">
+                            <img src="${post.image}" alt="Post image" class="w-full h-48 object-cover rounded-lg">
+                        </div>
+                    ` : ''}
+                    <p class="text-gray-800 mb-3">${post.content.substring(0, 150)}${post.content.length > 150 ? '...' : ''}</p>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-600">Accounts:</span>
+                        ${postAccounts.map(account => `
+                            <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded flex items-center space-x-1">
+                                <span>${getPlatformIcon(account.platform)}</span>
+                                <span>${account.handle}</span>
+                            </span>
+                        `).join('')}
+                    </div>
                 `;
-            }).join('');
+                
+                // Add event listeners
+                const editBtn = postElement.querySelector('.edit-btn');
+                const deleteBtn = postElement.querySelector('.delete-btn');
+                const postNowBtn = postElement.querySelector('.post-now-btn');
+                
+                if (editBtn) {
+                    editBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        editPost(post.id);
+                    });
+                }
+                
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        deletePost(post.id);
+                    });
+                }
+                
+                if (postNowBtn) {
+                    postNowBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        postNow(post.id);
+                    });
+                }
+                
+                container.appendChild(postElement);
+            });
         }
 
         function updateTodaysSchedule() {
@@ -1760,5 +1802,5 @@
             alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} integration active. Posts will open in new window for manual publishing.`);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'973503baa6f1af1c',t:'MTc1NTg5MzQzNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97350b19a408af1c',t:'MTc1NTg5MzczOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
