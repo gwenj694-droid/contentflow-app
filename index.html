@@ -764,7 +764,12 @@
                     isSelected ? 'ring-2 ring-purple-400 bg-purple-50' : ''
                 } hover:bg-gray-50 transition-all`;
                 
-                dayElement.onclick = () => selectDate(dayDate);
+                dayElement.onclick = (e) => {
+                    // Only select date if clicking on the day itself, not on post elements
+                    if (e.target === dayElement || e.target === dayNumber || e.target.closest('.post-indicator-only')) {
+                        selectDate(dayDate);
+                    }
+                };
                 
                 // Day number
                 const dayNumber = document.createElement('div');
@@ -807,7 +812,7 @@
                             facebook: 'bg-blue-600'
                         };
                         
-                        postElement.className = `text-white p-1 rounded text-xs truncate cursor-pointer ${platformColors[platform] || 'bg-gray-500'}`;
+                        postElement.className = `text-white p-1 rounded text-xs truncate cursor-pointer ${platformColors[platform] || 'bg-gray-500'} post-indicator-only`;
                         postElement.innerHTML = `
                             <div class="font-medium">${time}</div>
                             <div class="truncate">${(post.content || '').substring(0, 20)}...</div>
@@ -824,8 +829,12 @@
                     // Show "more" indicator if there are additional posts
                     if (dayPosts.length > 2) {
                         const moreElement = document.createElement('div');
-                        moreElement.className = 'text-xs text-gray-600 font-medium text-center bg-gray-100 rounded px-1';
+                        moreElement.className = 'text-xs text-gray-600 font-medium text-center bg-gray-100 rounded px-1 cursor-pointer post-indicator-only';
                         moreElement.textContent = `+${dayPosts.length - 2} more`;
+                        moreElement.onclick = (e) => {
+                            e.stopPropagation();
+                            selectDate(dayDate);
+                        };
                         postsIndicator.appendChild(moreElement);
                     }
                     
@@ -1802,5 +1811,5 @@
             alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} integration active. Posts will open in new window for manual publishing.`);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97350b19a408af1c',t:'MTc1NTg5MzczOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9735152993a4af1c',t:'MTc1NTg5NDE1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
