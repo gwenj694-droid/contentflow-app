@@ -765,7 +765,9 @@
                 } hover:bg-gray-50 transition-all`;
                 
                 // FIXED: Simple click handler that always works
-                dayElement.addEventListener('click', function() {
+                dayElement.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     selectDate(dayDate);
                 });
                 
@@ -1618,33 +1620,36 @@
                     </div>
                 `;
                 
-                // Add event listeners
+                // Add event listeners with proper binding
                 const editBtn = postElement.querySelector('.edit-btn');
                 const deleteBtn = postElement.querySelector('.delete-btn');
                 const postNowBtn = postElement.querySelector('.post-now-btn');
                 
                 if (editBtn) {
-                    editBtn.addEventListener('click', function(e) {
+                    editBtn.onclick = function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         editPost(post.id);
-                    });
+                        return false;
+                    };
                 }
                 
                 if (deleteBtn) {
-                    deleteBtn.addEventListener('click', function(e) {
+                    deleteBtn.onclick = function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         deletePost(post.id);
-                    });
+                        return false;
+                    };
                 }
                 
                 if (postNowBtn) {
-                    postNowBtn.addEventListener('click', function(e) {
+                    postNowBtn.onclick = function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         postNow(post.id);
-                    });
+                        return false;
+                    };
                 }
                 
                 container.appendChild(postElement);
@@ -1669,7 +1674,7 @@
                 ).filter(Boolean);
                 
                 return `
-                    <div class="border border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50" onclick="editPost(${post.id})">
+                    <div class="border border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50" onclick="editPost(${post.id}); return false;">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-sm font-medium">
                                 ${new Date(post.date).toLocaleTimeString('en-US', { 
@@ -1677,7 +1682,7 @@
                                     minute: '2-digit' 
                                 })}
                             </span>
-                            <button onclick="event.stopPropagation(); postNow(${post.id})" class="bg-purple-400 hover:bg-purple-500 text-black px-2 py-1 rounded text-xs transition-colors">
+                            <button onclick="event.stopPropagation(); postNow(${post.id}); return false;" class="bg-purple-400 hover:bg-purple-500 text-black px-2 py-1 rounded text-xs transition-colors">
                                 Post Now
                             </button>
                         </div>
@@ -1800,5 +1805,5 @@
             alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} integration active. Posts will open in new window for manual publishing.`);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97354f00328c4939',t:'MTc1NTg5NjUxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9735588c93d34939',t:'MTc1NTg5NjkxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
