@@ -27,6 +27,20 @@
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
         }
+        .template-card { 
+            transition: all 0.3s ease; 
+            cursor: pointer;
+        }
+        .template-card:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .bulk-row { 
+            transition: all 0.2s ease;
+        }
+        .bulk-row:hover { 
+            background-color: #f9fafb;
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -93,71 +107,71 @@
 
                 <!-- Platform Connections -->
                 <div class="bg-white rounded-xl card-shadow p-6">
-                    <h2 class="text-xl font-semibold mb-4 flex items-center">
-                        <span class="mr-2">🔗</span>
-                        Connected Platforms
-                    </h2>
-                    <div class="space-y-3">
-                        <div class="platform-card bg-blue-50 border border-blue-200 rounded-lg p-4 cursor-pointer" onclick="togglePlatform('linkedin')">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold text-sm">in</div>
-                                    <span class="font-medium">LinkedIn</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-green-600 text-sm">Connected</span>
-                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="platform-card bg-pink-50 border border-pink-200 rounded-lg p-4 cursor-pointer" onclick="togglePlatform('instagram')">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded flex items-center justify-center text-white font-bold text-sm">📷</div>
-                                    <span class="font-medium">Instagram</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-green-600 text-sm">Connected</span>
-                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold flex items-center">
+                            <span class="mr-2">🔗</span>
+                            Connected Accounts
+                        </h2>
+                        <button onclick="openAccountSetup()" class="text-purple-600 hover:text-purple-800 text-sm font-medium">
+                            + Add Account
+                        </button>
+                    </div>
+                    
+                    <div id="connectedAccounts" class="space-y-3 mb-4">
+                        <!-- Connected accounts will be populated here -->
+                    </div>
+                    
+                    <!-- Available Platforms to Connect -->
+                    <div class="pt-4 border-t border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-600 mb-3">Available Platforms</h3>
+                        <div class="space-y-2">
+                            <div class="platform-card bg-blue-50 border border-blue-200 rounded-lg p-3 cursor-pointer" onclick="connectPlatform('linkedin')">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 bg-blue-600 rounded flex items-center justify-center text-white font-bold text-xs">in</div>
+                                        <span class="text-sm font-medium">LinkedIn</span>
+                                    </div>
+                                    <span class="text-xs text-blue-600">Connect</span>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="platform-card bg-blue-50 border border-blue-200 rounded-lg p-4 cursor-pointer" onclick="togglePlatform('twitter')">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 bg-blue-400 rounded flex items-center justify-center text-white font-bold text-sm">𝕏</div>
-                                    <span class="font-medium">X (Twitter)</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-green-600 text-sm">Connected</span>
-                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            
+                            <div class="platform-card bg-pink-50 border border-pink-200 rounded-lg p-3 cursor-pointer" onclick="connectPlatform('instagram')">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded flex items-center justify-center text-white font-bold text-xs">📷</div>
+                                        <span class="text-sm font-medium">Instagram</span>
+                                    </div>
+                                    <span class="text-xs text-pink-600">Connect</span>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="platform-card bg-black border border-gray-300 rounded-lg p-4 cursor-pointer" onclick="showProFeature('TikTok integration')">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 bg-black rounded flex items-center justify-center text-white font-bold text-sm">🎵</div>
-                                    <span class="font-medium text-white">TikTok</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-yellow-400 text-xs font-bold">PRO</span>
-                                    <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                            
+                            <div class="platform-card bg-blue-50 border border-blue-200 rounded-lg p-3 cursor-pointer" onclick="connectPlatform('twitter')">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 bg-blue-400 rounded flex items-center justify-center text-white font-bold text-xs">𝕏</div>
+                                        <span class="text-sm font-medium">X (Twitter)</span>
+                                    </div>
+                                    <span class="text-xs text-blue-600">Connect</span>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="platform-card bg-gray-50 border border-gray-200 rounded-lg p-4 cursor-pointer" onclick="showProFeature('Facebook integration')">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold text-sm">f</div>
-                                    <span class="font-medium">Facebook</span>
+                            
+                            <div class="platform-card bg-black border border-gray-300 rounded-lg p-3 cursor-pointer opacity-50" onclick="showProFeature('TikTok integration')">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 bg-black rounded flex items-center justify-center text-white font-bold text-xs">🎵</div>
+                                        <span class="text-sm font-medium text-white">TikTok</span>
+                                    </div>
+                                    <span class="text-xs text-yellow-400 font-bold">PRO</span>
                                 </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-yellow-600 text-xs font-bold">PRO</span>
+                            </div>
+                            
+                            <div class="platform-card bg-gray-50 border border-gray-200 rounded-lg p-3 cursor-pointer opacity-50" onclick="showProFeature('Facebook integration')">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 bg-blue-600 rounded flex items-center justify-center text-white font-bold text-xs">f</div>
+                                        <span class="text-sm font-medium">Facebook</span>
+                                    </div>
+                                    <span class="text-xs text-yellow-600 font-bold">PRO</span>
                                 </div>
                             </div>
                         </div>
@@ -175,9 +189,21 @@
                             <span>✏️</span>
                             <span>Create New Post</span>
                         </button>
+                        <button onclick="openBulkScheduler()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2">
+                            <span>📅</span>
+                            <span>Bulk Schedule</span>
+                        </button>
+                        <button onclick="openTemplates()" class="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2">
+                            <span>📝</span>
+                            <span>Content Templates</span>
+                        </button>
                         <button onclick="showTodaysPosts()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2">
                             <span>📋</span>
                             <span>Today's Posts</span>
+                        </button>
+                        <button onclick="openTeamCollaboration()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2">
+                            <span>👥</span>
+                            <span>Team Collaboration</span>
                         </button>
                         <button onclick="showProFeature('Advanced Analytics')" class="w-full bg-gray-800 hover:bg-black text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2">
                             <span>📊</span>
@@ -238,11 +264,192 @@
         </div>
     </div>
 
-    <!-- Create Post Modal -->
+    <!-- Account Setup Modal -->
+    <div id="accountSetupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-semibold">Connect Account</h3>
+                <button onclick="closeAccountSetup()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+            </div>
+            
+            <form id="accountForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Platform</label>
+                    <select id="platformSelect" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-400 focus:border-transparent">
+                        <option value="">Select Platform</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="twitter">X (Twitter)</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Account Name/Handle</label>
+                    <input type="text" id="accountHandle" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-400 focus:border-transparent" placeholder="@yourusername or Account Name">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Account Type</label>
+                    <select id="accountType" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-400 focus:border-transparent">
+                        <option value="personal">Personal</option>
+                        <option value="business">Business</option>
+                        <option value="creator">Creator</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Description (Optional)</label>
+                    <input type="text" id="accountDescription" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-400 focus:border-transparent" placeholder="e.g., Digital Marketing Account">
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button type="button" onclick="saveAccount()" class="flex-1 bg-purple-400 hover:bg-purple-500 text-black py-3 px-6 rounded-lg font-medium transition-colors">
+                        Connect Account
+                    </button>
+                    <button type="button" onclick="closeAccountSetup()" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bulk Scheduler Modal -->
+    <div id="bulkSchedulerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-semibold">Bulk Schedule Posts</h3>
+                <button onclick="closeBulkScheduler()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+            </div>
+            
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-gray-600">Schedule multiple posts at once. Perfect for planning your content calendar.</p>
+                    <button onclick="addBulkRow()" class="bg-purple-400 hover:bg-purple-500 text-black px-4 py-2 rounded-lg font-medium transition-colors">
+                        + Add Post
+                    </button>
+                </div>
+                
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-yellow-600">⚠️</span>
+                        <span class="text-sm text-yellow-800">Free version: Limited to 3 posts in bulk scheduler. <button onclick="upgradeToPro()" class="text-yellow-900 underline font-medium">Upgrade to Pro</button> for unlimited bulk scheduling.</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-700">Content</th>
+                            <th class="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-700">Date</th>
+                            <th class="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-700">Time</th>
+                            <th class="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-700">Accounts</th>
+                            <th class="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-700">Type</th>
+                            <th class="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-700">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bulkScheduleRows">
+                        <!-- Bulk schedule rows will be added here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="flex justify-between items-center mt-6">
+                <div class="text-sm text-gray-600">
+                    <span id="bulkRowCount">0</span> posts ready to schedule
+                </div>
+                <div class="flex space-x-4">
+                    <button onclick="saveBulkSchedule()" class="bg-purple-400 hover:bg-purple-500 text-black py-3 px-6 rounded-lg font-medium transition-colors">
+                        Schedule All Posts
+                    </button>
+                    <button onclick="closeBulkScheduler()" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Templates Modal -->
+    <div id="templatesModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-semibold">Content Templates</h3>
+                <button onclick="closeTemplates()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+            </div>
+            
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-gray-600">Use pre-made templates to create engaging content faster.</p>
+                    <button onclick="createCustomTemplate()" class="bg-purple-400 hover:bg-purple-500 text-black px-4 py-2 rounded-lg font-medium transition-colors">
+                        + Create Template
+                    </button>
+                </div>
+                
+                <div class="flex space-x-4 mb-6">
+                    <button onclick="filterTemplates('all')" class="px-4 py-2 bg-purple-100 text-purple-800 rounded-lg text-sm font-medium">All</button>
+                    <button onclick="filterTemplates('marketing')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200">Marketing</button>
+                    <button onclick="filterTemplates('engagement')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200">Engagement</button>
+                    <button onclick="filterTemplates('educational')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200">Educational</button>
+                    <button onclick="filterTemplates('promotional')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200">Promotional</button>
+                </div>
+            </div>
+            
+            <div id="templatesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Templates will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Collaboration Modal -->
+    <div id="teamModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-semibold">Team Collaboration</h3>
+                <button onclick="closeTeamCollaboration()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Team Members -->
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-semibold">Team Members</h4>
+                        <button onclick="inviteTeamMember()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                            + Invite Member
+                        </button>
+                    </div>
+                    
+                    <div id="teamMembers" class="space-y-3">
+                        <!-- Team members will be populated here -->
+                    </div>
+                </div>
+                
+                <!-- Pending Approvals -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Pending Approvals</h4>
+                    <div id="pendingApprovals" class="space-y-3">
+                        <!-- Pending approvals will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Team Activity Feed -->
+            <div class="mt-8">
+                <h4 class="text-lg font-semibold mb-4">Recent Activity</h4>
+                <div id="teamActivity" class="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto">
+                    <!-- Team activity will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Post Modal -->
     <div id="createPostModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-semibold">Create New Post</h3>
+                <h3 id="postModalTitle" class="text-2xl font-semibold">Create New Post</h3>
                 <button onclick="closeCreatePost()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
             </div>
             
@@ -256,28 +463,9 @@
             
             <form id="postForm" class="space-y-6">
                 <div>
-                    <label class="block text-sm font-medium mb-2">Select Platforms</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <label class="flex items-center space-x-2 cursor-pointer">
-                            <input type="checkbox" name="platforms" value="linkedin" class="rounded">
-                            <span>LinkedIn</span>
-                        </label>
-                        <label class="flex items-center space-x-2 cursor-pointer">
-                            <input type="checkbox" name="platforms" value="instagram" class="rounded">
-                            <span>Instagram</span>
-                        </label>
-                        <label class="flex items-center space-x-2 cursor-pointer">
-                            <input type="checkbox" name="platforms" value="twitter" class="rounded">
-                            <span>X (Twitter)</span>
-                        </label>
-                        <label class="flex items-center space-x-2 cursor-pointer opacity-50">
-                            <input type="checkbox" name="platforms" value="tiktok" class="rounded" disabled>
-                            <span>TikTok <span class="text-xs text-yellow-600 font-bold">PRO</span></span>
-                        </label>
-                        <label class="flex items-center space-x-2 cursor-pointer opacity-50">
-                            <input type="checkbox" name="platforms" value="facebook" class="rounded" disabled>
-                            <span>Facebook <span class="text-xs text-yellow-600 font-bold">PRO</span></span>
-                        </label>
+                    <label class="block text-sm font-medium mb-2">Select Accounts</label>
+                    <div id="accountSelection" class="grid grid-cols-1 gap-3">
+                        <!-- Connected accounts will be populated here -->
                     </div>
                 </div>
                 
@@ -336,7 +524,7 @@
                 </div>
                 
                 <div class="flex space-x-4">
-                    <button type="button" onclick="savePost()" class="flex-1 bg-purple-400 hover:bg-purple-500 text-black py-3 px-6 rounded-lg font-medium transition-colors">
+                    <button type="button" onclick="savePost()" id="savePostBtn" class="flex-1 bg-purple-400 hover:bg-purple-500 text-black py-3 px-6 rounded-lg font-medium transition-colors">
                         Schedule Post
                     </button>
                     <button type="button" onclick="closeCreatePost()" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -379,10 +567,10 @@
                     <span class="text-2xl">🚀</span>
                 </div>
                 <h3 class="text-xl font-semibold mb-2">Ready to Post!</h3>
-                <p class="text-gray-600 mb-6">Your content is ready to be published. Click the platform buttons below to post directly.</p>
+                <p class="text-gray-600 mb-6">Your content is ready to be published. Click the account buttons below to post directly.</p>
                 
-                <div id="postNowPlatforms" class="space-y-3 mb-6">
-                    <!-- Platform post buttons will be generated here -->
+                <div id="postNowAccounts" class="space-y-3 mb-6">
+                    <!-- Account post buttons will be generated here -->
                 </div>
                 
                 <button onclick="closePostNow()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors">
@@ -397,16 +585,90 @@
         let currentDate = new Date();
         let selectedDate = new Date();
         let scheduledPosts = JSON.parse(localStorage.getItem('scheduledPosts')) || [];
-        let connectedPlatforms = ['linkedin', 'instagram', 'twitter', 'tiktok'];
+        let connectedAccounts = JSON.parse(localStorage.getItem('connectedAccounts')) || [];
+        let contentTemplates = JSON.parse(localStorage.getItem('contentTemplates')) || getDefaultTemplates();
+        let teamMembers = JSON.parse(localStorage.getItem('teamMembers')) || getDefaultTeamMembers();
+        let editingPostId = null;
+        let bulkRowCounter = 0;
         
         // Your Stripe payment link - replace with your actual link
         const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/3cI9AS4IO7jK8Hj5gLcjS0g';
+
+        // Default templates
+        function getDefaultTemplates() {
+            return [
+                {
+                    id: 1,
+                    name: "Monday Motivation",
+                    category: "engagement",
+                    content: "🌟 Monday Motivation 🌟\n\nStart your week with purpose! What's one goal you're excited to work on this week?\n\n#MondayMotivation #Goals #Success",
+                    type: "text",
+                    platforms: ["linkedin", "instagram", "twitter"]
+                },
+                {
+                    id: 2,
+                    name: "Behind the Scenes",
+                    category: "engagement",
+                    content: "🎬 Behind the scenes at [Your Company]!\n\nHere's what goes into creating [your product/service]. We love sharing our process with you!\n\n#BehindTheScenes #TeamWork #Process",
+                    type: "image",
+                    platforms: ["instagram", "linkedin"]
+                },
+                {
+                    id: 3,
+                    name: "Tip Tuesday",
+                    category: "educational",
+                    content: "💡 Tip Tuesday! 💡\n\nHere's a quick tip to [solve common problem]:\n\n✅ [Tip 1]\n✅ [Tip 2]\n✅ [Tip 3]\n\nWhich tip will you try first?\n\n#TipTuesday #Tips #Education",
+                    type: "text",
+                    platforms: ["linkedin", "twitter", "instagram"]
+                },
+                {
+                    id: 4,
+                    name: "Product Showcase",
+                    category: "promotional",
+                    content: "✨ Spotlight on [Product Name] ✨\n\n[Brief product description and key benefits]\n\n🔗 Learn more: [link]\n\n#Product #Innovation #Quality",
+                    type: "image",
+                    platforms: ["instagram", "linkedin", "facebook"]
+                },
+                {
+                    id: 5,
+                    name: "Customer Success Story",
+                    category: "marketing",
+                    content: "🎉 Success Story Alert! 🎉\n\n\"[Customer testimonial or success story]\"\n\n- [Customer Name], [Company]\n\nWe're so proud to be part of your journey!\n\n#CustomerSuccess #Testimonial #Results",
+                    type: "text",
+                    platforms: ["linkedin", "instagram", "twitter"]
+                },
+                {
+                    id: 6,
+                    name: "Question of the Day",
+                    category: "engagement",
+                    content: "🤔 Question of the Day:\n\n[Engaging question related to your industry]\n\nDrop your thoughts in the comments! We love hearing from you.\n\n#QuestionOfTheDay #Community #Discussion",
+                    type: "text",
+                    platforms: ["linkedin", "instagram", "twitter", "facebook"]
+                }
+            ];
+        }
+
+        // Default team members
+        function getDefaultTeamMembers() {
+            return [
+                {
+                    id: 1,
+                    name: "You",
+                    email: "you@company.com",
+                    role: "Admin",
+                    avatar: "👤",
+                    status: "active",
+                    joinDate: new Date().toISOString()
+                }
+            ];
+        }
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
             generateCalendar();
             updateTodaysSchedule();
             updateScheduledPosts();
+            updateConnectedAccounts();
             
             // Set default date and time
             const today = new Date();
@@ -419,9 +681,568 @@
             });
         });
 
+        // Default templates
+        function getDefaultTemplates() {
+            return [
+                {
+                    id: 1,
+                    name: "Monday Motivation",
+                    category: "engagement",
+                    content: "🌟 Monday Motivation 🌟\n\nStart your week with purpose! What's one goal you're excited to work on this week?\n\n#MondayMotivation #Goals #Success",
+                    type: "text",
+                    platforms: ["linkedin", "instagram", "twitter"]
+                },
+                {
+                    id: 2,
+                    name: "Behind the Scenes",
+                    category: "engagement",
+                    content: "🎬 Behind the scenes at [Your Company]!\n\nHere's what goes into creating [your product/service]. We love sharing our process with you!\n\n#BehindTheScenes #TeamWork #Process",
+                    type: "image",
+                    platforms: ["instagram", "linkedin"]
+                },
+                {
+                    id: 3,
+                    name: "Tip Tuesday",
+                    category: "educational",
+                    content: "💡 Tip Tuesday! 💡\n\nHere's a quick tip to [solve common problem]:\n\n✅ [Tip 1]\n✅ [Tip 2]\n✅ [Tip 3]\n\nWhich tip will you try first?\n\n#TipTuesday #Tips #Education",
+                    type: "text",
+                    platforms: ["linkedin", "twitter", "instagram"]
+                },
+                {
+                    id: 4,
+                    name: "Product Showcase",
+                    category: "promotional",
+                    content: "✨ Spotlight on [Product Name] ✨\n\n[Brief product description and key benefits]\n\n🔗 Learn more: [link]\n\n#Product #Innovation #Quality",
+                    type: "image",
+                    platforms: ["instagram", "linkedin", "facebook"]
+                },
+                {
+                    id: 5,
+                    name: "Customer Success Story",
+                    category: "marketing",
+                    content: "🎉 Success Story Alert! 🎉\n\n\"[Customer testimonial or success story]\"\n\n- [Customer Name], [Company]\n\nWe're so proud to be part of your journey!\n\n#CustomerSuccess #Testimonial #Results",
+                    type: "text",
+                    platforms: ["linkedin", "instagram", "twitter"]
+                },
+                {
+                    id: 6,
+                    name: "Question of the Day",
+                    category: "engagement",
+                    content: "🤔 Question of the Day:\n\n[Engaging question related to your industry]\n\nDrop your thoughts in the comments! We love hearing from you.\n\n#QuestionOfTheDay #Community #Discussion",
+                    type: "text",
+                    platforms: ["linkedin", "instagram", "twitter", "facebook"]
+                }
+            ];
+        }
+
+        // Default team members
+        function getDefaultTeamMembers() {
+            return [
+                {
+                    id: 1,
+                    name: "You",
+                    email: "you@company.com",
+                    role: "Admin",
+                    avatar: "👤",
+                    status: "active",
+                    joinDate: new Date().toISOString()
+                }
+            ];
+        }
+
+        // Bulk Scheduler Functions
+        function openBulkScheduler() {
+            if (connectedAccounts.length === 0) {
+                alert('Please connect at least one account before using bulk scheduler.');
+                openAccountSetup();
+                return;
+            }
+            
+            document.getElementById('bulkSchedulerModal').classList.remove('hidden');
+            document.getElementById('bulkSchedulerModal').classList.add('flex');
+            
+            // Add initial rows
+            if (document.getElementById('bulkScheduleRows').children.length === 0) {
+                addBulkRow();
+                addBulkRow();
+                addBulkRow();
+            }
+        }
+
+        function closeBulkScheduler() {
+            document.getElementById('bulkSchedulerModal').classList.add('hidden');
+            document.getElementById('bulkSchedulerModal').classList.remove('flex');
+            document.getElementById('bulkScheduleRows').innerHTML = '';
+            bulkRowCounter = 0;
+            updateBulkRowCount();
+        }
+
+        function addBulkRow() {
+            const freeLimit = 3;
+            const currentRows = document.getElementById('bulkScheduleRows').children.length;
+            
+            if (currentRows >= freeLimit) {
+                showProFeature('Unlimited Bulk Scheduling');
+                return;
+            }
+            
+            bulkRowCounter++;
+            const row = document.createElement('tr');
+            row.className = 'bulk-row';
+            row.id = `bulkRow${bulkRowCounter}`;
+            
+            const today = new Date();
+            const defaultDate = new Date(today.getTime() + (currentRows * 24 * 60 * 60 * 1000));
+            
+            row.innerHTML = `
+                <td class="border border-gray-200 px-2 py-2">
+                    <textarea class="w-full border border-gray-300 rounded px-3 py-2 text-sm resize-none" rows="3" placeholder="Enter your post content..."></textarea>
+                </td>
+                <td class="border border-gray-200 px-2 py-2">
+                    <input type="date" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" value="${defaultDate.toISOString().split('T')[0]}">
+                </td>
+                <td class="border border-gray-200 px-2 py-2">
+                    <input type="time" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" value="09:00">
+                </td>
+                <td class="border border-gray-200 px-2 py-2">
+                    <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm" multiple>
+                        ${connectedAccounts.map(account => `
+                            <option value="${account.id}">${account.handle} (${account.platform})</option>
+                        `).join('')}
+                    </select>
+                </td>
+                <td class="border border-gray-200 px-2 py-2">
+                    <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm">
+                        <option value="text">Text</option>
+                        <option value="image">Image</option>
+                        <option value="video">Video</option>
+                        <option value="article">Article</option>
+                    </select>
+                </td>
+                <td class="border border-gray-200 px-2 py-2">
+                    <button onclick="removeBulkRow('bulkRow${bulkRowCounter}')" class="text-red-600 hover:text-red-800 text-sm">Remove</button>
+                </td>
+            `;
+            
+            document.getElementById('bulkScheduleRows').appendChild(row);
+            updateBulkRowCount();
+        }
+
+        function removeBulkRow(rowId) {
+            document.getElementById(rowId).remove();
+            updateBulkRowCount();
+        }
+
+        function updateBulkRowCount() {
+            const count = document.getElementById('bulkScheduleRows').children.length;
+            document.getElementById('bulkRowCount').textContent = count;
+        }
+
+        function saveBulkSchedule() {
+            const rows = document.getElementById('bulkScheduleRows').children;
+            let savedCount = 0;
+            
+            for (let row of rows) {
+                const content = row.querySelector('textarea').value.trim();
+                const date = row.querySelector('input[type="date"]').value;
+                const time = row.querySelector('input[type="time"]').value;
+                const accountSelect = row.querySelector('select[multiple]');
+                const selectedAccounts = Array.from(accountSelect.selectedOptions).map(option => parseInt(option.value));
+                const type = row.querySelector('select:not([multiple])').value;
+                
+                if (content && date && time && selectedAccounts.length > 0) {
+                    const post = {
+                        id: Date.now() + savedCount,
+                        content,
+                        date: date + 'T' + time,
+                        type,
+                        accounts: selectedAccounts,
+                        status: 'scheduled',
+                        image: null
+                    };
+                    
+                    scheduledPosts.push(post);
+                    savedCount++;
+                }
+            }
+            
+            if (savedCount > 0) {
+                localStorage.setItem('scheduledPosts', JSON.stringify(scheduledPosts));
+                closeBulkScheduler();
+                generateCalendar();
+                updateScheduledPosts();
+                updateTodaysSchedule();
+                alert(`${savedCount} posts scheduled successfully!`);
+            } else {
+                alert('Please fill in all required fields for at least one post.');
+            }
+        }
+
+        // Content Templates Functions
+        function openTemplates() {
+            document.getElementById('templatesModal').classList.remove('hidden');
+            document.getElementById('templatesModal').classList.add('flex');
+            displayTemplates();
+        }
+
+        function closeTemplates() {
+            document.getElementById('templatesModal').classList.add('hidden');
+            document.getElementById('templatesModal').classList.remove('flex');
+        }
+
+        function displayTemplates(filter = 'all') {
+            const container = document.getElementById('templatesGrid');
+            const filteredTemplates = filter === 'all' ? contentTemplates : contentTemplates.filter(t => t.category === filter);
+            
+            container.innerHTML = filteredTemplates.map(template => `
+                <div class="template-card bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all" onclick="useTemplate(${template.id})">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-lg">${template.name}</h4>
+                        <span class="px-2 py-1 bg-${getCategoryColor(template.category)}-100 text-${getCategoryColor(template.category)}-800 text-xs rounded-full">
+                            ${template.category}
+                        </span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">${template.content.substring(0, 120)}...</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex space-x-1">
+                            ${template.platforms.map(platform => `
+                                <span class="text-xs">${getPlatformIcon(platform)}</span>
+                            `).join('')}
+                        </div>
+                        <button class="text-purple-600 hover:text-purple-800 text-sm font-medium">Use Template</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterTemplates(category) {
+            // Update active filter button
+            document.querySelectorAll('[onclick^="filterTemplates"]').forEach(btn => {
+                btn.className = 'px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200';
+            });
+            event.target.className = 'px-4 py-2 bg-purple-100 text-purple-800 rounded-lg text-sm font-medium';
+            
+            displayTemplates(category);
+        }
+
+        function useTemplate(templateId) {
+            const template = contentTemplates.find(t => t.id === templateId);
+            if (!template) return;
+            
+            closeTemplates();
+            openCreatePost();
+            
+            // Populate form with template data
+            setTimeout(() => {
+                document.getElementById('postContent').value = template.content;
+                document.getElementById('postType').value = template.type;
+                document.getElementById('charCount').textContent = template.content.length;
+                
+                if (template.type === 'image' || template.type === 'video') {
+                    document.getElementById('imageUploadSection').classList.remove('hidden');
+                }
+            }, 100);
+        }
+
+        function createCustomTemplate() {
+            const name = prompt('Enter template name:');
+            if (!name) return;
+            
+            const content = prompt('Enter template content:');
+            if (!content) return;
+            
+            const category = prompt('Enter category (marketing, engagement, educational, promotional):') || 'marketing';
+            
+            const template = {
+                id: Date.now(),
+                name,
+                content,
+                category,
+                type: 'text',
+                platforms: ['instagram', 'linkedin', 'twitter']
+            };
+            
+            contentTemplates.push(template);
+            localStorage.setItem('contentTemplates', JSON.stringify(contentTemplates));
+            displayTemplates();
+            
+            alert('Custom template created successfully!');
+        }
+
+        function getCategoryColor(category) {
+            const colors = {
+                marketing: 'blue',
+                engagement: 'green',
+                educational: 'yellow',
+                promotional: 'purple'
+            };
+            return colors[category] || 'gray';
+        }
+
+        // Team Collaboration Functions
+        function openTeamCollaboration() {
+            document.getElementById('teamModal').classList.remove('hidden');
+            document.getElementById('teamModal').classList.add('flex');
+            displayTeamMembers();
+            displayPendingApprovals();
+            displayTeamActivity();
+        }
+
+        function closeTeamCollaboration() {
+            document.getElementById('teamModal').classList.add('hidden');
+            document.getElementById('teamModal').classList.remove('flex');
+        }
+
+        function displayTeamMembers() {
+            const container = document.getElementById('teamMembers');
+            
+            container.innerHTML = teamMembers.map(member => `
+                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                            <span class="text-lg">${member.avatar}</span>
+                        </div>
+                        <div>
+                            <div class="font-medium">${member.name}</div>
+                            <div class="text-sm text-gray-600">${member.email}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2 py-1 bg-${member.role === 'Admin' ? 'purple' : 'gray'}-100 text-${member.role === 'Admin' ? 'purple' : 'gray'}-800 text-xs rounded-full">
+                            ${member.role}
+                        </span>
+                        ${member.id !== 1 ? `
+                            <button onclick="removeTeamMember(${member.id})" class="text-red-600 hover:text-red-800 text-sm">Remove</button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayPendingApprovals() {
+            const container = document.getElementById('pendingApprovals');
+            
+            // Sample pending approvals
+            const pendingApprovals = [
+                {
+                    id: 1,
+                    postContent: "Exciting news! We're launching our new product next week...",
+                    submittedBy: "Sarah Johnson",
+                    submittedAt: "2 hours ago",
+                    platform: "LinkedIn"
+                },
+                {
+                    id: 2,
+                    postContent: "Behind the scenes at our office today! Check out our team...",
+                    submittedBy: "Mike Chen",
+                    submittedAt: "5 hours ago",
+                    platform: "Instagram"
+                }
+            ];
+            
+            if (pendingApprovals.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-sm">No pending approvals</p>';
+                return;
+            }
+            
+            container.innerHTML = pendingApprovals.map(approval => `
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium">${approval.submittedBy}</span>
+                        <span class="text-xs text-gray-500">${approval.submittedAt}</span>
+                    </div>
+                    <p class="text-sm text-gray-700 mb-3">${approval.postContent.substring(0, 80)}...</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">${approval.platform}</span>
+                        <div class="flex space-x-2">
+                            <button onclick="approvePost(${approval.id})" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs">Approve</button>
+                            <button onclick="rejectPost(${approval.id})" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs">Reject</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayTeamActivity() {
+            const container = document.getElementById('teamActivity');
+            
+            // Sample team activity
+            const activities = [
+                { user: "You", action: "scheduled a post", time: "10 minutes ago", icon: "📅" },
+                { user: "Sarah Johnson", action: "submitted a post for approval", time: "2 hours ago", icon: "📝" },
+                { user: "Mike Chen", action: "connected Instagram account", time: "1 day ago", icon: "🔗" },
+                { user: "You", action: "created a new template", time: "2 days ago", icon: "📋" }
+            ];
+            
+            container.innerHTML = activities.map(activity => `
+                <div class="flex items-center space-x-3 py-2">
+                    <span class="text-lg">${activity.icon}</span>
+                    <div class="flex-1">
+                        <span class="font-medium">${activity.user}</span>
+                        <span class="text-gray-600"> ${activity.action}</span>
+                    </div>
+                    <span class="text-xs text-gray-500">${activity.time}</span>
+                </div>
+            `).join('');
+        }
+
+        function inviteTeamMember() {
+            const email = prompt('Enter team member email:');
+            if (!email) return;
+            
+            const name = prompt('Enter team member name:');
+            if (!name) return;
+            
+            const role = prompt('Enter role (Editor, Viewer):') || 'Editor';
+            
+            const member = {
+                id: Date.now(),
+                name,
+                email,
+                role,
+                avatar: '👤',
+                status: 'pending',
+                joinDate: new Date().toISOString()
+            };
+            
+            teamMembers.push(member);
+            localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+            displayTeamMembers();
+            
+            alert(`Invitation sent to ${email}!`);
+        }
+
+        function removeTeamMember(memberId) {
+            if (confirm('Are you sure you want to remove this team member?')) {
+                teamMembers = teamMembers.filter(member => member.id !== memberId);
+                localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+                displayTeamMembers();
+            }
+        }
+
+        function approvePost(approvalId) {
+            alert('Post approved and scheduled!');
+            displayPendingApprovals();
+        }
+
+        function rejectPost(approvalId) {
+            const reason = prompt('Reason for rejection (optional):');
+            alert('Post rejected. Feedback sent to team member.');
+            displayPendingApprovals();
+        }
+
+        // Account Management Functions
+        function openAccountSetup() {
+            document.getElementById('accountSetupModal').classList.remove('hidden');
+            document.getElementById('accountSetupModal').classList.add('flex');
+        }
+
+        function closeAccountSetup() {
+            document.getElementById('accountSetupModal').classList.add('hidden');
+            document.getElementById('accountSetupModal').classList.remove('flex');
+            document.getElementById('accountForm').reset();
+        }
+
+        function saveAccount() {
+            const platform = document.getElementById('platformSelect').value;
+            const handle = document.getElementById('accountHandle').value;
+            const type = document.getElementById('accountType').value;
+            const description = document.getElementById('accountDescription').value;
+            
+            if (!platform || !handle) {
+                alert('Please fill in platform and account handle.');
+                return;
+            }
+            
+            const account = {
+                id: Date.now(),
+                platform,
+                handle: handle.startsWith('@') ? handle : '@' + handle,
+                type,
+                description,
+                connected: true,
+                dateAdded: new Date().toISOString()
+            };
+            
+            connectedAccounts.push(account);
+            localStorage.setItem('connectedAccounts', JSON.stringify(connectedAccounts));
+            
+            closeAccountSetup();
+            updateConnectedAccounts();
+            updateAccountSelection();
+            
+            alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} account connected successfully!`);
+        }
+
+        function updateConnectedAccounts() {
+            const container = document.getElementById('connectedAccounts');
+            
+            if (connectedAccounts.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-sm">No accounts connected yet. Click "Add Account" to get started.</p>';
+                return;
+            }
+            
+            container.innerHTML = connectedAccounts.map(account => `
+                <div class="platform-card bg-${getPlatformColor(account.platform)}-50 border border-${getPlatformColor(account.platform)}-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-${getPlatformColor(account.platform)}-600 rounded flex items-center justify-center text-white font-bold text-sm">
+                                ${getPlatformIcon(account.platform)}
+                            </div>
+                            <div>
+                                <div class="font-medium">${account.handle}</div>
+                                <div class="text-xs text-gray-600">${account.description || account.type}</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="removeAccount(${account.id})" class="text-red-600 hover:text-red-800 text-xs">
+                                Remove
+                            </button>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removeAccount(accountId) {
+            if (confirm('Are you sure you want to remove this account?')) {
+                connectedAccounts = connectedAccounts.filter(account => account.id !== accountId);
+                localStorage.setItem('connectedAccounts', JSON.stringify(connectedAccounts));
+                updateConnectedAccounts();
+                updateAccountSelection();
+            }
+        }
+
+        function updateAccountSelection() {
+            const container = document.getElementById('accountSelection');
+            
+            if (connectedAccounts.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-sm">No accounts connected. <button onclick="openAccountSetup()" class="text-purple-600 underline">Add an account</button> to get started.</p>';
+                return;
+            }
+            
+            container.innerHTML = connectedAccounts.map(account => `
+                <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+                    <input type="checkbox" name="selectedAccounts" value="${account.id}" class="rounded">
+                    <div class="w-6 h-6 bg-${getPlatformColor(account.platform)}-600 rounded flex items-center justify-center text-white font-bold text-xs">
+                        ${getPlatformIcon(account.platform)}
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-medium text-sm">${account.handle}</div>
+                        <div class="text-xs text-gray-600">${account.platform.charAt(0).toUpperCase() + account.platform.slice(1)} • ${account.description || account.type}</div>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function connectPlatform(platform) {
+            document.getElementById('platformSelect').value = platform;
+            openAccountSetup();
+        }
+
         // Payment and Pro Features
         function upgradeToPro() {
-            // Open your Stripe payment link
             window.open(STRIPE_PAYMENT_LINK, '_blank');
         }
 
@@ -434,6 +1255,387 @@
         function closeProFeature() {
             document.getElementById('proFeatureModal').classList.add('hidden');
             document.getElementById('proFeatureModal').classList.remove('flex');
+        }
+
+        // Bulk Scheduler Functions
+        function openBulkScheduler() {
+            if (connectedAccounts.length === 0) {
+                alert('Please connect at least one account before using bulk scheduler.');
+                openAccountSetup();
+                return;
+            }
+            
+            document.getElementById('bulkSchedulerModal').classList.remove('hidden');
+            document.getElementById('bulkSchedulerModal').classList.add('flex');
+            
+            // Add initial rows
+            if (document.getElementById('bulkScheduleRows').children.length === 0) {
+                addBulkRow();
+                addBulkRow();
+                addBulkRow();
+            }
+        }
+
+        function closeBulkScheduler() {
+            document.getElementById('bulkSchedulerModal').classList.add('hidden');
+            document.getElementById('bulkSchedulerModal').classList.remove('flex');
+            document.getElementById('bulkScheduleRows').innerHTML = '';
+            bulkRowCounter = 0;
+            updateBulkRowCount();
+        }
+
+        function addBulkRow() {
+            const freeLimit = 3;
+            const currentRows = document.getElementById('bulkScheduleRows').children.length;
+            
+            if (currentRows >= freeLimit) {
+                showProFeature('Unlimited Bulk Scheduling');
+                return;
+            }
+            
+            bulkRowCounter++;
+            const row = document.createElement('tr');
+            row.className = 'bulk-row';
+            row.id = `bulkRow${bulkRowCounter}`;
+            
+            const today = new Date();
+            const defaultDate = new Date(today.getTime() + (currentRows * 24 * 60 * 60 * 1000));
+            
+            row.innerHTML = `
+                <td class="border border-gray-200 px-2 py-2">
+                    <textarea class="w-full border border-gray-300 rounded px-3 py-2 text-sm resize-none" rows="3" placeholder="Enter your post content..."></textarea>
+                </td>
+                <td class="border border-gray-200 px-2 py-2">
+                    <input type="date" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" value="${defaultDate.toISOString().split('T')[0]}">
+                </td>
+                <td class="border border-gray-200 px-2 py-2">
+                    <input type="time" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" value="09:00">
+                </td>
+                <td class="border border-gray-200 px-2 py-2">
+                    <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm" multiple>
+                        ${connectedAccounts.map(account => `
+                            <option value="${account.id}">${account.handle} (${account.platform})</option>
+                        `).join('')}
+                    </select>
+                </td>
+                <td class="border border-gray-200 px-2 py-2">
+                    <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm">
+                        <option value="text">Text</option>
+                        <option value="image">Image</option>
+                        <option value="video">Video</option>
+                        <option value="article">Article</option>
+                    </select>
+                </td>
+                <td class="border border-gray-200 px-2 py-2">
+                    <button onclick="removeBulkRow('bulkRow${bulkRowCounter}')" class="text-red-600 hover:text-red-800 text-sm">Remove</button>
+                </td>
+            `;
+            
+            document.getElementById('bulkScheduleRows').appendChild(row);
+            updateBulkRowCount();
+        }
+
+        function removeBulkRow(rowId) {
+            document.getElementById(rowId).remove();
+            updateBulkRowCount();
+        }
+
+        function updateBulkRowCount() {
+            const count = document.getElementById('bulkScheduleRows').children.length;
+            document.getElementById('bulkRowCount').textContent = count;
+        }
+
+        function saveBulkSchedule() {
+            const rows = document.getElementById('bulkScheduleRows').children;
+            let savedCount = 0;
+            
+            for (let row of rows) {
+                const content = row.querySelector('textarea').value.trim();
+                const date = row.querySelector('input[type="date"]').value;
+                const time = row.querySelector('input[type="time"]').value;
+                const accountSelect = row.querySelector('select[multiple]');
+                const selectedAccounts = Array.from(accountSelect.selectedOptions).map(option => parseInt(option.value));
+                const type = row.querySelector('select:not([multiple])').value;
+                
+                if (content && date && time && selectedAccounts.length > 0) {
+                    const post = {
+                        id: Date.now() + savedCount,
+                        content,
+                        date: date + 'T' + time,
+                        type,
+                        accounts: selectedAccounts,
+                        status: 'scheduled',
+                        image: null
+                    };
+                    
+                    scheduledPosts.push(post);
+                    savedCount++;
+                }
+            }
+            
+            if (savedCount > 0) {
+                localStorage.setItem('scheduledPosts', JSON.stringify(scheduledPosts));
+                closeBulkScheduler();
+                generateCalendar();
+                updateScheduledPosts();
+                updateTodaysSchedule();
+                alert(`${savedCount} posts scheduled successfully!`);
+            } else {
+                alert('Please fill in all required fields for at least one post.');
+            }
+        }
+
+        // Content Templates Functions
+        function openTemplates() {
+            document.getElementById('templatesModal').classList.remove('hidden');
+            document.getElementById('templatesModal').classList.add('flex');
+            displayTemplates();
+        }
+
+        function closeTemplates() {
+            document.getElementById('templatesModal').classList.add('hidden');
+            document.getElementById('templatesModal').classList.remove('flex');
+        }
+
+        function displayTemplates(filter = 'all') {
+            const container = document.getElementById('templatesGrid');
+            const filteredTemplates = filter === 'all' ? contentTemplates : contentTemplates.filter(t => t.category === filter);
+            
+            container.innerHTML = filteredTemplates.map(template => `
+                <div class="template-card bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all" onclick="useTemplate(${template.id})">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-lg">${template.name}</h4>
+                        <span class="px-2 py-1 bg-${getCategoryColor(template.category)}-100 text-${getCategoryColor(template.category)}-800 text-xs rounded-full">
+                            ${template.category}
+                        </span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">${template.content.substring(0, 120)}...</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex space-x-1">
+                            ${template.platforms.map(platform => `
+                                <span class="text-xs">${getPlatformIcon(platform)}</span>
+                            `).join('')}
+                        </div>
+                        <button class="text-purple-600 hover:text-purple-800 text-sm font-medium">Use Template</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterTemplates(category) {
+            // Update active filter button
+            document.querySelectorAll('[onclick^="filterTemplates"]').forEach(btn => {
+                btn.className = 'px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200';
+            });
+            event.target.className = 'px-4 py-2 bg-purple-100 text-purple-800 rounded-lg text-sm font-medium';
+            
+            displayTemplates(category);
+        }
+
+        function useTemplate(templateId) {
+            const template = contentTemplates.find(t => t.id === templateId);
+            if (!template) return;
+            
+            closeTemplates();
+            openCreatePost();
+            
+            // Populate form with template data
+            setTimeout(() => {
+                document.getElementById('postContent').value = template.content;
+                document.getElementById('postType').value = template.type;
+                document.getElementById('charCount').textContent = template.content.length;
+                
+                if (template.type === 'image' || template.type === 'video') {
+                    document.getElementById('imageUploadSection').classList.remove('hidden');
+                }
+            }, 100);
+        }
+
+        function createCustomTemplate() {
+            const name = prompt('Enter template name:');
+            if (!name) return;
+            
+            const content = prompt('Enter template content:');
+            if (!content) return;
+            
+            const category = prompt('Enter category (marketing, engagement, educational, promotional):') || 'marketing';
+            
+            const template = {
+                id: Date.now(),
+                name,
+                content,
+                category,
+                type: 'text',
+                platforms: ['instagram', 'linkedin', 'twitter']
+            };
+            
+            contentTemplates.push(template);
+            localStorage.setItem('contentTemplates', JSON.stringify(contentTemplates));
+            displayTemplates();
+            
+            alert('Custom template created successfully!');
+        }
+
+        function getCategoryColor(category) {
+            const colors = {
+                marketing: 'blue',
+                engagement: 'green',
+                educational: 'yellow',
+                promotional: 'purple'
+            };
+            return colors[category] || 'gray';
+        }
+
+        // Team Collaboration Functions
+        function openTeamCollaboration() {
+            document.getElementById('teamModal').classList.remove('hidden');
+            document.getElementById('teamModal').classList.add('flex');
+            displayTeamMembers();
+            displayPendingApprovals();
+            displayTeamActivity();
+        }
+
+        function closeTeamCollaboration() {
+            document.getElementById('teamModal').classList.add('hidden');
+            document.getElementById('teamModal').classList.remove('flex');
+        }
+
+        function displayTeamMembers() {
+            const container = document.getElementById('teamMembers');
+            
+            container.innerHTML = teamMembers.map(member => `
+                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                            <span class="text-lg">${member.avatar}</span>
+                        </div>
+                        <div>
+                            <div class="font-medium">${member.name}</div>
+                            <div class="text-sm text-gray-600">${member.email}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2 py-1 bg-${member.role === 'Admin' ? 'purple' : 'gray'}-100 text-${member.role === 'Admin' ? 'purple' : 'gray'}-800 text-xs rounded-full">
+                            ${member.role}
+                        </span>
+                        ${member.id !== 1 ? `
+                            <button onclick="removeTeamMember(${member.id})" class="text-red-600 hover:text-red-800 text-sm">Remove</button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayPendingApprovals() {
+            const container = document.getElementById('pendingApprovals');
+            
+            // Sample pending approvals
+            const pendingApprovals = [
+                {
+                    id: 1,
+                    postContent: "Exciting news! We're launching our new product next week...",
+                    submittedBy: "Sarah Johnson",
+                    submittedAt: "2 hours ago",
+                    platform: "LinkedIn"
+                },
+                {
+                    id: 2,
+                    postContent: "Behind the scenes at our office today! Check out our team...",
+                    submittedBy: "Mike Chen",
+                    submittedAt: "5 hours ago",
+                    platform: "Instagram"
+                }
+            ];
+            
+            if (pendingApprovals.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-sm">No pending approvals</p>';
+                return;
+            }
+            
+            container.innerHTML = pendingApprovals.map(approval => `
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium">${approval.submittedBy}</span>
+                        <span class="text-xs text-gray-500">${approval.submittedAt}</span>
+                    </div>
+                    <p class="text-sm text-gray-700 mb-3">${approval.postContent.substring(0, 80)}...</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">${approval.platform}</span>
+                        <div class="flex space-x-2">
+                            <button onclick="approvePost(${approval.id})" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs">Approve</button>
+                            <button onclick="rejectPost(${approval.id})" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs">Reject</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayTeamActivity() {
+            const container = document.getElementById('teamActivity');
+            
+            // Sample team activity
+            const activities = [
+                { user: "You", action: "scheduled a post", time: "10 minutes ago", icon: "📅" },
+                { user: "Sarah Johnson", action: "submitted a post for approval", time: "2 hours ago", icon: "📝" },
+                { user: "Mike Chen", action: "connected Instagram account", time: "1 day ago", icon: "🔗" },
+                { user: "You", action: "created a new template", time: "2 days ago", icon: "📋" }
+            ];
+            
+            container.innerHTML = activities.map(activity => `
+                <div class="flex items-center space-x-3 py-2">
+                    <span class="text-lg">${activity.icon}</span>
+                    <div class="flex-1">
+                        <span class="font-medium">${activity.user}</span>
+                        <span class="text-gray-600"> ${activity.action}</span>
+                    </div>
+                    <span class="text-xs text-gray-500">${activity.time}</span>
+                </div>
+            `).join('');
+        }
+
+        function inviteTeamMember() {
+            const email = prompt('Enter team member email:');
+            if (!email) return;
+            
+            const name = prompt('Enter team member name:');
+            if (!name) return;
+            
+            const role = prompt('Enter role (Editor, Viewer):') || 'Editor';
+            
+            const member = {
+                id: Date.now(),
+                name,
+                email,
+                role,
+                avatar: '👤',
+                status: 'pending',
+                joinDate: new Date().toISOString()
+            };
+            
+            teamMembers.push(member);
+            localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+            displayTeamMembers();
+            
+            alert(`Invitation sent to ${email}!`);
+        }
+
+        function removeTeamMember(memberId) {
+            if (confirm('Are you sure you want to remove this team member?')) {
+                teamMembers = teamMembers.filter(member => member.id !== memberId);
+                localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+                displayTeamMembers();
+            }
+        }
+
+        function approvePost(approvalId) {
+            alert('Post approved and scheduled!');
+            displayPendingApprovals();
+        }
+
+        function rejectPost(approvalId) {
+            const reason = prompt('Reason for rejection (optional):');
+            alert('Post rejected. Feedback sent to team member.');
+            displayPendingApprovals();
         }
 
         // Calendar functions
@@ -503,7 +1705,11 @@
                     const postElement = document.createElement('div');
                     postElement.className = 'text-xs p-1 rounded text-white truncate cursor-pointer';
                     
-                    // Color based on post type or first platform
+                    // Color based on first account's platform
+                    const firstAccountId = post.accounts[0];
+                    const firstAccount = connectedAccounts.find(acc => acc.id == firstAccountId);
+                    const platform = firstAccount ? firstAccount.platform : 'gray';
+                    
                     const platformColors = {
                         linkedin: 'bg-blue-500',
                         instagram: 'bg-pink-500',
@@ -512,8 +1718,7 @@
                         facebook: 'bg-blue-600'
                     };
                     
-                    const primaryPlatform = post.platforms[0];
-                    postElement.className += ` ${platformColors[primaryPlatform] || 'bg-gray-500'}`;
+                    postElement.className += ` ${platformColors[platform] || 'bg-gray-500'}`;
                     
                     // Show time and truncated content
                     const time = new Date(post.date).toLocaleTimeString('en-US', { 
@@ -526,7 +1731,10 @@
                         <div class="font-medium">${time}</div>
                         <div class="truncate">${post.content.substring(0, 30)}...</div>
                         <div class="flex space-x-1 mt-1">
-                            ${post.platforms.map(platform => getPlatformIcon(platform)).join(' ')}
+                            ${post.accounts.map(accountId => {
+                                const account = connectedAccounts.find(acc => acc.id == accountId);
+                                return account ? getPlatformIcon(account.platform) : '📱';
+                            }).join(' ')}
                         </div>
                     `;
                     
@@ -573,6 +1781,12 @@
 
         // Post management functions
         function openCreatePost() {
+            if (connectedAccounts.length === 0) {
+                alert('Please connect at least one account before creating a post.');
+                openAccountSetup();
+                return;
+            }
+            
             // Check free version limit
             const currentMonth = new Date().getMonth();
             const currentYear = new Date().getFullYear();
@@ -586,6 +1800,49 @@
                 return;
             }
             
+            editingPostId = null;
+            document.getElementById('postModalTitle').textContent = 'Create New Post';
+            document.getElementById('savePostBtn').textContent = 'Schedule Post';
+            updateAccountSelection();
+            document.getElementById('createPostModal').classList.remove('hidden');
+            document.getElementById('createPostModal').classList.add('flex');
+        }
+
+        function editPost(postId) {
+            const post = scheduledPosts.find(p => p.id === postId);
+            if (!post) return;
+            
+            editingPostId = postId;
+            document.getElementById('postModalTitle').textContent = 'Edit Post';
+            document.getElementById('savePostBtn').textContent = 'Update Post';
+            
+            // Populate form with existing data
+            document.getElementById('postContent').value = post.content;
+            document.getElementById('scheduleDate').value = post.date.split('T')[0];
+            document.getElementById('scheduleTime').value = post.date.split('T')[1];
+            document.getElementById('postType').value = post.type;
+            document.getElementById('charCount').textContent = post.content.length;
+            
+            if (post.image) {
+                document.getElementById('previewImg').src = post.image;
+                document.getElementById('uploadArea').classList.add('hidden');
+                document.getElementById('imagePreview').classList.remove('hidden');
+            }
+            
+            if (post.type === 'image' || post.type === 'video') {
+                document.getElementById('imageUploadSection').classList.remove('hidden');
+            }
+            
+            updateAccountSelection();
+            
+            // Check the accounts that were selected for this post
+            setTimeout(() => {
+                post.accounts.forEach(accountId => {
+                    const checkbox = document.querySelector(`input[name="selectedAccounts"][value="${accountId}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }, 100);
+            
             document.getElementById('createPostModal').classList.remove('hidden');
             document.getElementById('createPostModal').classList.add('flex');
         }
@@ -597,6 +1854,7 @@
             document.getElementById('charCount').textContent = '0';
             document.getElementById('imageUploadSection').classList.add('hidden');
             removeImage();
+            editingPostId = null;
         }
 
         function savePost() {
@@ -604,26 +1862,39 @@
             const date = document.getElementById('scheduleDate').value;
             const time = document.getElementById('scheduleTime').value;
             const type = document.getElementById('postType').value;
-            const platforms = Array.from(document.querySelectorAll('input[name="platforms"]:checked'))
-                .map(cb => cb.value);
+            const selectedAccounts = Array.from(document.querySelectorAll('input[name="selectedAccounts"]:checked'))
+                .map(cb => parseInt(cb.value));
             const imageData = document.getElementById('previewImg').src;
             
-            if (!content || !date || !time || platforms.length === 0) {
-                alert('Please fill in all required fields and select at least one platform.');
+            if (!content || !date || !time || selectedAccounts.length === 0) {
+                alert('Please fill in all required fields and select at least one account.');
                 return;
             }
             
-            const post = {
-                id: Date.now(),
+            const postData = {
                 content,
                 date: date + 'T' + time,
                 type,
-                platforms,
+                accounts: selectedAccounts,
                 status: 'scheduled',
                 image: type === 'image' && imageData && imageData !== window.location.href ? imageData : null
             };
             
-            scheduledPosts.push(post);
+            if (editingPostId) {
+                // Update existing post
+                const postIndex = scheduledPosts.findIndex(p => p.id === editingPostId);
+                if (postIndex !== -1) {
+                    scheduledPosts[postIndex] = { ...scheduledPosts[postIndex], ...postData };
+                }
+            } else {
+                // Create new post
+                const post = {
+                    id: Date.now(),
+                    ...postData
+                };
+                scheduledPosts.push(post);
+            }
+            
             localStorage.setItem('scheduledPosts', JSON.stringify(scheduledPosts));
             
             closeCreatePost();
@@ -631,7 +1902,7 @@
             updateScheduledPosts();
             updateTodaysSchedule();
             
-            alert('Post scheduled successfully!');
+            alert(editingPostId ? 'Post updated successfully!' : 'Post scheduled successfully!');
         }
 
         function toggleImageUpload() {
@@ -692,50 +1963,57 @@
                 return;
             }
             
-            container.innerHTML = dayPosts.map(post => `
-                <div class="post-item border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm font-medium text-gray-600">
-                                ${new Date(post.date).toLocaleTimeString('en-US', { 
-                                    hour: '2-digit', 
-                                    minute: '2-digit' 
-                                })}
-                            </span>
-                            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
-                                ${post.type}
-                            </span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            ${isToday(post.date) ? `
-                                <button onclick="postNow(${post.id})" class="bg-purple-400 hover:bg-purple-500 text-black px-3 py-1 rounded text-sm transition-colors">
-                                    Post Now
+            container.innerHTML = dayPosts.map(post => {
+                const postAccounts = post.accounts.map(accountId => 
+                    connectedAccounts.find(acc => acc.id == accountId)
+                ).filter(Boolean);
+                
+                return `
+                    <div class="post-item border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm font-medium text-gray-600">
+                                    ${new Date(post.date).toLocaleTimeString('en-US', { 
+                                        hour: '2-digit', 
+                                        minute: '2-digit' 
+                                    })}
+                                </span>
+                                <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
+                                    ${post.type}
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                ${isToday(post.date) ? `
+                                    <button onclick="postNow(${post.id})" class="bg-purple-400 hover:bg-purple-500 text-black px-3 py-1 rounded text-sm transition-colors">
+                                        Post Now
+                                    </button>
+                                ` : ''}
+                                <button onclick="editPost(${post.id})" class="text-blue-600 hover:text-blue-800 text-sm">
+                                    Edit
                                 </button>
-                            ` : ''}
-                            <button onclick="editPost(${post.id})" class="text-blue-600 hover:text-blue-800 text-sm">
-                                Edit
-                            </button>
-                            <button onclick="deletePost(${post.id})" class="text-red-600 hover:text-red-800 text-sm">
-                                Delete
-                            </button>
+                                <button onclick="deletePost(${post.id})" class="text-red-600 hover:text-red-800 text-sm">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                        ${post.image ? `
+                            <div class="mb-3">
+                                <img src="${post.image}" alt="Post image" class="w-full h-48 object-cover rounded-lg">
+                            </div>
+                        ` : ''}
+                        <p class="text-gray-800 mb-3">${post.content.substring(0, 150)}${post.content.length > 150 ? '...' : ''}</p>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-600">Accounts:</span>
+                            ${postAccounts.map(account => `
+                                <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded flex items-center space-x-1">
+                                    <span>${getPlatformIcon(account.platform)}</span>
+                                    <span>${account.handle}</span>
+                                </span>
+                            `).join('')}
                         </div>
                     </div>
-                    ${post.image ? `
-                        <div class="mb-3">
-                            <img src="${post.image}" alt="Post image" class="w-full h-48 object-cover rounded-lg">
-                        </div>
-                    ` : ''}
-                    <p class="text-gray-800 mb-3">${post.content.substring(0, 150)}${post.content.length > 150 ? '...' : ''}</p>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-sm text-gray-600">Platforms:</span>
-                        ${post.platforms.map(platform => `
-                            <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded capitalize">
-                                ${platform}
-                            </span>
-                        `).join('')}
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function updateTodaysSchedule() {
@@ -750,36 +2028,51 @@
                 return;
             }
             
-            container.innerHTML = todaysPosts.map(post => `
-                <div class="border border-gray-200 rounded-lg p-3">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm font-medium">
-                            ${new Date(post.date).toLocaleTimeString('en-US', { 
-                                hour: '2-digit', 
-                                minute: '2-digit' 
-                            })}
-                        </span>
-                        <button onclick="postNow(${post.id})" class="bg-purple-400 hover:bg-purple-500 text-black px-2 py-1 rounded text-xs transition-colors">
-                            Post Now
-                        </button>
+            container.innerHTML = todaysPosts.map(post => {
+                const postAccounts = post.accounts.map(accountId => 
+                    connectedAccounts.find(acc => acc.id == accountId)
+                ).filter(Boolean);
+                
+                return `
+                    <div class="border border-gray-200 rounded-lg p-3">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium">
+                                ${new Date(post.date).toLocaleTimeString('en-US', { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit' 
+                                })}
+                            </span>
+                            <button onclick="postNow(${post.id})" class="bg-purple-400 hover:bg-purple-500 text-black px-2 py-1 rounded text-xs transition-colors">
+                                Post Now
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-2">${post.content.substring(0, 80)}...</p>
+                        <div class="flex space-x-1">
+                            ${postAccounts.map(account => `
+                                <span class="text-xs">${getPlatformIcon(account.platform)}</span>
+                            `).join('')}
+                        </div>
                     </div>
-                    <p class="text-sm text-gray-700">${post.content.substring(0, 80)}...</p>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function postNow(postId) {
             const post = scheduledPosts.find(p => p.id === postId);
             if (!post) return;
             
-            const modal = document.getElementById('postNowModal');
-            const platformsContainer = document.getElementById('postNowPlatforms');
+            const postAccounts = post.accounts.map(accountId => 
+                connectedAccounts.find(acc => acc.id == accountId)
+            ).filter(Boolean);
             
-            platformsContainer.innerHTML = post.platforms.map(platform => `
-                <button onclick="publishToPlatform('${platform}', ${postId})" 
-                        class="w-full bg-${getPlatformColor(platform)}-600 hover:bg-${getPlatformColor(platform)}-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2">
-                    <span>${getPlatformIcon(platform)}</span>
-                    <span>Post to ${platform.charAt(0).toUpperCase() + platform.slice(1)}</span>
+            const modal = document.getElementById('postNowModal');
+            const accountsContainer = document.getElementById('postNowAccounts');
+            
+            accountsContainer.innerHTML = postAccounts.map(account => `
+                <button onclick="publishToAccount('${account.platform}', '${account.handle}', ${postId})" 
+                        class="w-full bg-${getPlatformColor(account.platform)}-600 hover:bg-${getPlatformColor(account.platform)}-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2">
+                    <span>${getPlatformIcon(account.platform)}</span>
+                    <span>Post to ${account.handle}</span>
                 </button>
             `).join('');
             
@@ -787,11 +2080,10 @@
             modal.classList.add('flex');
         }
 
-        function publishToPlatform(platform, postId) {
+        function publishToAccount(platform, handle, postId) {
             const post = scheduledPosts.find(p => p.id === postId);
             
-            // Simulate posting to platform
-            // In a real implementation, this would integrate with platform APIs
+            // Platform-specific URLs for posting
             const platformUrls = {
                 linkedin: 'https://www.linkedin.com/sharing/share-offsite/',
                 twitter: 'https://twitter.com/intent/tweet',
@@ -816,7 +2108,7 @@
             post.status = 'posted';
             localStorage.setItem('scheduledPosts', JSON.stringify(scheduledPosts));
             
-            alert(`Opening ${platform} for posting. Complete the post manually in the new window.`);
+            alert(`Opening ${platform} for ${handle}. Complete the post manually in the new window.`);
             closePostNow();
             updateScheduledPosts();
             updateTodaysSchedule();
@@ -872,10 +2164,7 @@
         function togglePlatform(platform) {
             alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} integration active. Posts will open in new window for manual publishing.`);
         }
-
-        function connectPlatform(platform) {
-            alert(`Connect your ${platform.charAt(0).toUpperCase() + platform.slice(1)} account to enable direct posting capabilities.`);
-        }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9734570d448fbdf5',t:'MTc1NTg4NjM2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'973499bc7763af1c',t:'MTc1NTg4OTA5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
