@@ -691,7 +691,7 @@
             });
         });
 
-        // Calendar functions - FIXED VERSION
+        // Calendar functions - COMPLETELY FIXED VERSION
         function generateCalendar() {
             const calendar = document.getElementById('calendar');
             const monthYear = document.getElementById('currentMonth');
@@ -719,26 +719,43 @@
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             
-            // Empty cells for days before month starts
-            for (let i = 0; i < firstDay; i++) {
-                const emptyDay = document.createElement('div');
-                emptyDay.className = 'calendar-day p-2';
-                calendar.appendChild(emptyDay);
+            // Calculate total cells needed (always 6 rows = 42 cells)
+            const totalCells = 42;
+            const daysFromPrevMonth = firstDay;
+            const daysFromNextMonth = totalCells - daysFromPrevMonth - daysInMonth;
+            
+            // Previous month's trailing days
+            const prevMonth = month === 0 ? 11 : month - 1;
+            const prevYear = month === 0 ? year - 1 : year;
+            const daysInPrevMonth = new Date(prevYear, prevMonth + 1, 0).getDate();
+            
+            for (let i = daysFromPrevMonth - 1; i >= 0; i--) {
+                const day = daysInPrevMonth - i;
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day p-2 text-gray-400 bg-gray-50';
+                dayElement.innerHTML = `<div class="text-sm">${day}</div>`;
+                calendar.appendChild(dayElement);
             }
             
-            // Days of the month
+            // Current month days
             for (let day = 1; day <= daysInMonth; day++) {
                 const dayElement = document.createElement('div');
                 const dayDate = new Date(year, month, day);
                 const isToday = dayDate.toDateString() === new Date().toDateString();
                 const isSelected = dayDate.toDateString() === selectedDate.toDateString();
                 
-                // FIXED: Better post filtering
+                // Filter posts for this specific day
                 const dayPosts = scheduledPosts.filter(post => {
-                    const postDate = new Date(post.date);
-                    return postDate.getFullYear() === dayDate.getFullYear() &&
-                           postDate.getMonth() === dayDate.getMonth() &&
-                           postDate.getDate() === dayDate.getDate();
+                    if (!post || !post.date) return false;
+                    try {
+                        const postDate = new Date(post.date);
+                        return postDate.getFullYear() === dayDate.getFullYear() &&
+                               postDate.getMonth() === dayDate.getMonth() &&
+                               postDate.getDate() === dayDate.getDate();
+                    } catch (e) {
+                        console.error('Invalid post date:', post.date);
+                        return false;
+                    }
                 });
                 
                 dayElement.className = `calendar-day p-2 cursor-pointer rounded-lg border ${
@@ -755,7 +772,7 @@
                 dayNumber.textContent = day;
                 dayElement.appendChild(dayNumber);
                 
-                // Posts indicator - IMPROVED
+                // Posts indicator
                 if (dayPosts.length > 0) {
                     const postsIndicator = document.createElement('div');
                     postsIndicator.className = 'text-xs space-y-1';
@@ -763,16 +780,24 @@
                     // Show up to 2 posts with time
                     dayPosts.slice(0, 2).forEach(post => {
                         const postElement = document.createElement('div');
-                        const time = new Date(post.date).toLocaleTimeString('en-US', { 
-                            hour: '2-digit', 
-                            minute: '2-digit',
-                            hour12: false
-                        });
+                        let time = '00:00';
                         
-                        // Get platform color
-                        const firstAccountId = post.accounts[0];
-                        const firstAccount = connectedAccounts.find(acc => acc.id == firstAccountId);
-                        const platform = firstAccount ? firstAccount.platform : 'gray';
+                        try {
+                            time = new Date(post.date).toLocaleTimeString('en-US', { 
+                                hour: '2-digit', 
+                                minute: '2-digit',
+                                hour12: false
+                            });
+                        } catch (e) {
+                            console.error('Invalid time format:', post.date);
+                        }
+                        
+                        // Get platform color safely
+                        let platform = 'gray';
+                        if (post.accounts && post.accounts.length > 0) {
+                            const firstAccount = connectedAccounts.find(acc => acc.id == post.accounts[0]);
+                            platform = firstAccount ? firstAccount.platform : 'gray';
+                        }
                         
                         const platformColors = {
                             linkedin: 'bg-blue-500',
@@ -785,7 +810,7 @@
                         postElement.className = `text-white p-1 rounded text-xs truncate cursor-pointer ${platformColors[platform] || 'bg-gray-500'}`;
                         postElement.innerHTML = `
                             <div class="font-medium">${time}</div>
-                            <div class="truncate">${post.content.substring(0, 20)}...</div>
+                            <div class="truncate">${(post.content || '').substring(0, 20)}...</div>
                         `;
                         
                         postElement.onclick = (e) => {
@@ -810,14 +835,15 @@
                 calendar.appendChild(dayElement);
             }
             
-            // FIXED: Fill remaining cells to complete the grid (6 rows total)
-            const totalCells = calendar.children.length - 7; // Subtract header row
-            const remainingCells = 42 - totalCells; // 6 rows × 7 days = 42 cells
+            // Next month's leading days
+            const nextMonth = month === 11 ? 0 : month + 1;
+            const nextYear = month === 11 ? year + 1 : year;
             
-            for (let i = 0; i < remainingCells; i++) {
-                const emptyDay = document.createElement('div');
-                emptyDay.className = 'calendar-day p-2';
-                calendar.appendChild(emptyDay);
+            for (let day = 1; day <= daysFromNextMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day p-2 text-gray-400 bg-gray-50';
+                dayElement.innerHTML = `<div class="text-sm">${day}</div>`;
+                calendar.appendChild(dayElement);
             }
         }
 
@@ -1734,7 +1760,5 @@
             alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} integration active. Posts will open in new window for manual publishing.`);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9734f43f3759f54a',t:'MTc1NTg5MjgwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'973503baa6f1af1c',t:'MTc1NTg5MzQzNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
-
