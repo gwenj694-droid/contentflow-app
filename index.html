@@ -691,7 +691,7 @@
             });
         });
 
-        // Calendar functions - COMPLETELY FIXED VERSION
+        // Calendar functions - FIXED VERSION
         function generateCalendar() {
             const calendar = document.getElementById('calendar');
             const monthYear = document.getElementById('currentMonth');
@@ -764,12 +764,10 @@
                     isSelected ? 'ring-2 ring-purple-400 bg-purple-50' : ''
                 } hover:bg-gray-50 transition-all`;
                 
-                dayElement.onclick = (e) => {
-                    // Only select date if clicking on the day itself, not on post elements
-                    if (e.target === dayElement || e.target === dayNumber || e.target.closest('.post-indicator-only')) {
-                        selectDate(dayDate);
-                    }
-                };
+                // FIXED: Simple click handler that always works
+                dayElement.addEventListener('click', function() {
+                    selectDate(dayDate);
+                });
                 
                 // Day number
                 const dayNumber = document.createElement('div');
@@ -812,16 +810,11 @@
                             facebook: 'bg-blue-600'
                         };
                         
-                        postElement.className = `text-white p-1 rounded text-xs truncate cursor-pointer ${platformColors[platform] || 'bg-gray-500'} post-indicator-only`;
+                        postElement.className = `text-white p-1 rounded text-xs truncate cursor-pointer ${platformColors[platform] || 'bg-gray-500'}`;
                         postElement.innerHTML = `
                             <div class="font-medium">${time}</div>
                             <div class="truncate">${(post.content || '').substring(0, 20)}...</div>
                         `;
-                        
-                        postElement.onclick = (e) => {
-                            e.stopPropagation();
-                            selectDate(dayDate);
-                        };
                         
                         postsIndicator.appendChild(postElement);
                     });
@@ -829,12 +822,8 @@
                     // Show "more" indicator if there are additional posts
                     if (dayPosts.length > 2) {
                         const moreElement = document.createElement('div');
-                        moreElement.className = 'text-xs text-gray-600 font-medium text-center bg-gray-100 rounded px-1 cursor-pointer post-indicator-only';
+                        moreElement.className = 'text-xs text-gray-600 font-medium text-center bg-gray-100 rounded px-1 cursor-pointer';
                         moreElement.textContent = `+${dayPosts.length - 2} more`;
-                        moreElement.onclick = (e) => {
-                            e.stopPropagation();
-                            selectDate(dayDate);
-                        };
                         postsIndicator.appendChild(moreElement);
                     }
                     
@@ -1635,7 +1624,7 @@
                 const postNowBtn = postElement.querySelector('.post-now-btn');
                 
                 if (editBtn) {
-                    editBtn.addEventListener('click', (e) => {
+                    editBtn.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         editPost(post.id);
@@ -1643,7 +1632,7 @@
                 }
                 
                 if (deleteBtn) {
-                    deleteBtn.addEventListener('click', (e) => {
+                    deleteBtn.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         deletePost(post.id);
@@ -1651,7 +1640,7 @@
                 }
                 
                 if (postNowBtn) {
-                    postNowBtn.addEventListener('click', (e) => {
+                    postNowBtn.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         postNow(post.id);
@@ -1680,7 +1669,7 @@
                 ).filter(Boolean);
                 
                 return `
-                    <div class="border border-gray-200 rounded-lg p-3">
+                    <div class="border border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50" onclick="editPost(${post.id})">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-sm font-medium">
                                 ${new Date(post.date).toLocaleTimeString('en-US', { 
@@ -1688,7 +1677,7 @@
                                     minute: '2-digit' 
                                 })}
                             </span>
-                            <button onclick="postNow(${post.id})" class="bg-purple-400 hover:bg-purple-500 text-black px-2 py-1 rounded text-xs transition-colors">
+                            <button onclick="event.stopPropagation(); postNow(${post.id})" class="bg-purple-400 hover:bg-purple-500 text-black px-2 py-1 rounded text-xs transition-colors">
                                 Post Now
                             </button>
                         </div>
@@ -1811,5 +1800,5 @@
             alert(`${platform.charAt(0).toUpperCase() + platform.slice(1)} integration active. Posts will open in new window for manual publishing.`);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9735152993a4af1c',t:'MTc1NTg5NDE1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97354f00328c4939',t:'MTc1NTg5NjUxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
